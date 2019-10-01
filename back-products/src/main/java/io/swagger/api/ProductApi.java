@@ -5,75 +5,103 @@
  */
 package io.swagger.api;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import io.swagger.model.Product;
-import io.swagger.annotations.*;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2019-09-20T03:43:35.949Z")
 
 @Api(value = "product", description = "the product API")
 public interface ProductApi {
 
-    @ApiOperation(value = "Add a new product", nickname = "addProduct", notes = "", response = Product.class, tags={ "admin", })
-    @ApiResponses(value = { 
+    @ApiOperation(value = "Add a new product", nickname = "addProduct", notes = "", response = Product.class,
+        tags = {"admin",})
+    @ApiResponses(value = {
         @ApiResponse(code = 201, message = "Product added successfully", response = Product.class),
-        @ApiResponse(code = 405, message = "Invalid input") })
+        @ApiResponse(code = 405, message = "Invalid input")})
     @CrossOrigin(origins = "*", maxAge = 3600)
     @RequestMapping(value = "/product",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
+        produces = {"application/json"},
+        consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<Product> addProduct(@ApiParam(value = "product object that needs to be added" ,required=true )  @Valid @RequestBody Product body);
+    ResponseEntity<Product> addProduct(
+        @ApiParam(value = "product object that needs to be added", required = true) @Valid @RequestBody Product body);
 
-
-    @ApiOperation(value = "Deletes a pet", nickname = "deleteProduct", notes = "", tags={ "admin", })
-    @ApiResponses(value = { 
+    @ApiOperation(value = "Deletes a pet", nickname = "deleteProduct", notes = "", tags = {"admin",})
+    @ApiResponses(value = {
         @ApiResponse(code = 400, message = "Invalid ID supplied"),
-        @ApiResponse(code = 404, message = "Product not found") })
+        @ApiResponse(code = 404, message = "Product not found")})
     @RequestMapping(value = "/product/{productId}",
-        produces = { "application/json" }, 
+        produces = {"application/json"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteProduct(@ApiParam(value = "Product id to delete",required=true) @PathVariable("productId") Long productId);
+    ResponseEntity<Boolean> deleteProduct(
+        @ApiParam(value = "Product id to delete", required = true) @PathVariable("productId") Long productId);
 
-
-    @ApiOperation(value = "Finds products by name", nickname = "findProductsByName", notes = "At least part of the name must be provided", response = Product.class, responseContainer = "List", tags={ "admin","seller", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = Product.class, responseContainer = "List"),
-        @ApiResponse(code = 400, message = "Invalid name") })
+    @ApiOperation(value = "Finds products by name", nickname = "findProductsByName",
+        notes = "At least part of the name must be provided", response = Product.class, responseContainer = "List",
+        tags = {"admin", "seller",})
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "successful operation", response = Product.class,
+            responseContainer = "List"),
+        @ApiResponse(code = 400, message = "Invalid name")})
     @CrossOrigin(origins = "*", maxAge = 3600)
     @RequestMapping(value = "/product/findByName",
-        produces = { "application/json" }, 
+        produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<Product>> findProductsByName(@NotNull @ApiParam(value = "part of the name to be considered for filtering", required = true) @Valid @RequestParam(value = "name", required = true) String name);
+    ResponseEntity<List<Product>> findProductsByName(
+        @NotNull @ApiParam(value = "part of the name to be considered for filtering",
+            required = true) @Valid @RequestParam(value = "name", required = true) String name);
 
-
-    @ApiOperation(value = "Find product by ID", nickname = "getProductById", notes = "Returns a single product", response = Product.class, tags={ "admin","seller", })
-    @ApiResponses(value = { 
+    @ApiOperation(value = "Find product by ID", nickname = "getProductById", notes = "Returns a single product",
+        response = Product.class, tags = {"admin", "seller",})
+    @ApiResponses(value = {
         @ApiResponse(code = 200, message = "successful operation", response = Product.class),
         @ApiResponse(code = 400, message = "Invalid ID supplied"),
-        @ApiResponse(code = 404, message = "Produt not found") })
+        @ApiResponse(code = 404, message = "Produt not found")})
     @RequestMapping(value = "/product/{productId}",
-        produces = { "application/json" }, 
+        produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<Product> getProductById(@ApiParam(value = "ID of product to return",required=true) @PathVariable("productId") Long productId);
+    ResponseEntity<Product> getProductById(
+        @ApiParam(value = "ID of product to return", required = true) @PathVariable("productId") Long productId);
 
-
-    @ApiOperation(value = "Update an existing product", nickname = "updateProduct", notes = "", response = Product.class, tags={ "admin", })
-    @ApiResponses(value = { 
+    @ApiOperation(value = "Update an existing product", nickname = "updateProduct", notes = "",
+        response = Product.class, tags = {"admin",})
+    @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Product updated successfully", response = Product.class),
         @ApiResponse(code = 400, message = "Invalid ID supplied"),
         @ApiResponse(code = 404, message = "product not found"),
-        @ApiResponse(code = 405, message = "Validation exception") })
-    @RequestMapping(value = "/product/{productId}",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
+        @ApiResponse(code = 405, message = "Validation exception")})
+    @RequestMapping(value = "/product",
+        produces = {"application/json"},
+        consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<Product> updateProduct(@ApiParam(value = "ID of product to update",required=true) @PathVariable("productId") Long productId,@ApiParam(value = "Product object that needs to be updated" ,required=true )  @Valid @RequestBody Product body);
+    ResponseEntity<Product> updateProduct(
+        @ApiParam(value = "Product object that needs to be updated", required = true) @Valid @RequestBody Product body);
+
+    @ApiOperation(value = "Finds all products", nickname = "findAllProducts",
+        notes = "At least part of the name must be provided", response = Product.class, responseContainer = "List",
+        tags = {"admin", "seller"})
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "successful operation", response = Product.class,
+            responseContainer = "List"),
+        @ApiResponse(code = 400, message = "Invalid name")})
+    @CrossOrigin(origins = "*", maxAge = 3600)
+    @RequestMapping(value = "/product",
+        produces = {"application/json"},
+        method = RequestMethod.GET)
+    ResponseEntity<List<Product>> findAllProducts();
 
 }

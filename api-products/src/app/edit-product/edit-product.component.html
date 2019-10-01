@@ -1,0 +1,20 @@
+<h3 class="col-lg-12">{{title}}</h3>
+
+<hr>
+<form #formProduct="ngForm" (ngSubmit)="saveProduct()" class="col-lg-6" id="formProduct">
+    <label for="name">Nombre</label>
+    <input type="text" #name="ngModel" name="name" [(ngModel)]="product.name" class="form-control" required>
+    <span *ngIf="!name.valid && name.touched" class="label label-danger">El nombre es obligatorio</span>
+    <br>
+    <label for="description">Descripción</label>
+    <textarea #description="ngModel" name="description" [(ngModel)]="product.description" class="form-control" rows="3" required></textarea>
+    <span *ngIf="!description.valid && description.touched" class="label label-danger">La descripción es obligatoria</span>
+    <br>
+    <label for="price">Precio</label>
+    <input type="number" #price="ngModel" name="price" [(ngModel)]="product.price" class="form-control" required>
+    <span *ngIf="!price.valid && price.touched" class="label label-danger">El precio es obligatorio</span>
+    <br>
+
+    <input type="submit" value="Guardar" class="btn btn-success" [disabled]='!formProduct.form.valid' />
+    <input type="submit" value="Cancelar" class="btn btn-info" (click)="cancel()" />
+</form>

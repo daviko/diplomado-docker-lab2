@@ -1,0 +1,16 @@
+<div style="text-align:center">
+  <h1 class="col-lg-12">{{title}}</h1>
+</div>
+<div id="content" class="col-lg-10 col-lg-offset-1">
+  <!--<header id="header" class="col-lg-12" [style.background]="header_color">-->
+  <nav id="nav" class="col-lg-12">
+      <ul>
+        <li><a [routerLink]="['/list-product']" [routerLinkActive]="['activado']">Listar productos</a></li>
+        <li><a [routerLink]="['/edit-product/-1']" [routerLinkActive]="['activado']">Agregar producto</a></li>        
+      </ul>
+  </nav> 
+  <section id="main" class="col-lg-12">
+    <router-outlet></router-outlet> 
+  </section>
+  <footer id="footer" class="col-lg-12"></footer>
+</div>

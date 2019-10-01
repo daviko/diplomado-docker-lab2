@@ -1,0 +1,41 @@
+<h3 class="col-lg-12">{{title}}</h3>
+<table class="table">
+    <thead>
+            <tr>
+              <th>Id</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Precio</th>
+              <th colspan="2">Acciones</th>
+            </tr>
+    </thead>
+    <tbody>
+            <tr *ngFor="let product of listProducts">
+                <td>{{product.productId}}</td>
+                <td>{{product.name}}</td>
+                <td>{{product.description}}</td>
+                <td>${{product.price}}</td>
+                <td><a class="btn btn-md btn-warning" [routerLink]="['/edit-product', product.productId]">Editar</a></td>
+                <td><input type="submit" value="Eliminar" class="btn btn-danger" data-toggle="modal" data-target="#myModal" (click)="setProduct(product)" /></td>
+            </tr>
+    </tbody>    
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+        <h4 class="modal-title">Eliminar producto</h4>
+      </div>
+      <div class="modal-body">
+        <p>Está seguro de eliminar el producto {{productSelected.name}}?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="deleteProduct()">Eliminar</button>
+        <button type="button" class="btn btn-info" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>

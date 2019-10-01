@@ -1,0 +1,67 @@
+version: '3.5'
+services:
+  reverse-proxy:
+    image: traefik:v2.0
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--providers.docker.exposedbydefault=false"
+    ports:
+      - "80:80"
+      - "8082:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - front_net
+      - back_net
+  api-products:
+    build: ./api-products/.
+    image: daviko/api-products:0.0.1-SNAPSHOT
+    depends_on:
+      - back-products
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api-products.rule=Host(`front-products.localhost`)"
+      - "traefik.http.routers.api-products.entrypoints=web"
+      - "traefik.docker.network=diplomado-docker-lab2_front_net"
+    ports:
+      - "80"
+    links:
+      - back-products
+    networks:
+      - front_net
+  back-products:
+    build: ./back-products/.
+    image: daviko/back-products:0.0.1-SNAPSHOT
+    environment:
+      - MYSQL_HOST=mysql
+    restart: on-failure
+    depends_on:
+      - mysql
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.back-products.rule=Host(`back-products.localhost`)"
+      - "traefik.http.routers.back-products.entrypoints=web"
+      - "traefik.docker.network=diplomado-docker-lab2_back_net"
+    ports:
+      - "8080"
+    links:
+      - mysql
+    networks:
+      - front_net
+      - back_net
+  mysql:
+    image: daviko/db-products:0.0.1-SNAPSHOT
+    container_name: mysql
+    volumes:
+      - "db-products-data:/app"
+    networks:
+      - back_net
+
+volumes:
+  db-products-data:
+
+networks:
+  back_net:
+  front_net:
